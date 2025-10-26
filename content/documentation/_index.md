@@ -1,7 +1,6 @@
 ---
-title: What is Deckhouse Prom++?
+title: Deckhouse Prom++
 weight: 1
-layout: single
 ---
 
 **Deckhouse Prom++** is an open-source monitoring system for high-load infrastructure, designed to collect metrics from various sources and analyze this data conveniently. It uses a combination of Golang and C++ programming languages at its core, which allows monitoring data to be stored in RAM in a highly compressed form, saving memory without compromising performance.

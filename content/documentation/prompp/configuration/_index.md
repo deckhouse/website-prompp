@@ -1,7 +1,6 @@
 ---
 title: "Configuration"
 weight: 9
-layout: single
 ---
 
 - [Configuration](./configuration/)

@@ -1,7 +1,6 @@
 ---
 title: "Конфигурация"
 weight: 9
-layout: single
 ---
 
 - [Конфигурация](./configuration/)

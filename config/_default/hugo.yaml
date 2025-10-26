@@ -4,6 +4,23 @@ defaultContentLanguageInSubdir: true
 timeZone: "UTC"
 
 markup:
+  tableOfContents:
+    endLevel: 3
+    ordered: false
+    startLevel: 2
+  goldmark:
+    duplicateResourceFiles: true
+    parser:
+      attribute:
+        block: false
+        title: true
+      autoHeadingID: true
+      autoHeadingIDType: github
+      wrapStandAloneImageWithinParagraph: true
+    renderer:
+      hardWraps: false
+      unsafe: true
+      xhtml: false
   highlight:
     anchorLineNos: false
     codeFences: true
@@ -107,5 +124,5 @@ languages:
     title: Deckhouse Prom++
     baseURL: https://deckhouse.ru/products/prompp/
     params:
-      publicRootURL: https://deckhouse.ru
+      publicRootURL: https://deckhouse.io
       description: ""

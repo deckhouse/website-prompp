@@ -1,7 +1,6 @@
 ---
 title: "Concepts"
 weight: 3
-layout: single
 ---
 
 This section will cover:

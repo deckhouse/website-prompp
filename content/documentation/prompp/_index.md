@@ -1,7 +1,6 @@
 ---
 title: "Deckhouse Prom++ Server"
 weight: 7
-layout: single
 ---
 
 This section covers:

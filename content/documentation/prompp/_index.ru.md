@@ -1,7 +1,6 @@
 ---
 title: "Сервер Deckhouse Prom++"
 weight: 7
-layout: single
 ---
 
 В данном разделе будет рассмотрено:
