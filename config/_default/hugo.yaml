@@ -35,6 +35,9 @@ markup:
     noHl: false
     style: native
     tabWidth: 4
+  diagrams:
+    enable: true
+    theme: default
 
 disableKinds:
 #- "404"
