@@ -23,6 +23,10 @@ help:
 	@echo "  BIND=$(BIND)"
 	@echo "  BASEURL=$(BASEURL)"
 
+up:
+	which werf >/dev/null || source $(trdl use werf 2 beta)
+	werf compose up --dev
+
 serve:
 	$(HUGO) serve $(SERVE_FLAGS)
 

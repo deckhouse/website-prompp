@@ -71,34 +71,6 @@ params:
   # Global relevant links.
   links:
 
-menus:
-  # Site header menu
-  main:
-  - name: Get started
-    pageRef: /get-started/
-    weight: 1
-  - name: Guides
-    pageRef: /guides/
-    weight: 2
-  - name: Manuals
-    pageRef: /manuals/
-    weight: 3
-  - name: Reference
-    pageRef: /reference/
-    weight: 4
-  main2:
-    - identifier: info  # Родительский пункт "Info"
-      name: Info
-      weight: 1
-    - name: data_model
-      pageRef: /documentation/concept/data_model/
-      weight: 1
-    - name: federation
-      pageRef: /documentation/prompp/federation/federation/
-      weight: 2
-      parent: info  # Указывает, что это дочерний элемент "info"
-
-
 module:
   imports:
     # Site templates
