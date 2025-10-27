@@ -1,0 +1,18 @@
+priorityClassName:
+  _default: develop
+  production: production-medium
+  web-production: production-medium
+
+ingressClass:
+  _default: nginx
+  prod-25: nginx
+
+certificateClusterIssuer:
+  _default: letsencrypt
+  prod-25: letsencrypt-nginx
+
+resources:
+  requests:
+    memory:
+      _default: 32M
+      web-production: 150M
