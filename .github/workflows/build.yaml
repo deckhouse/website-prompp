@@ -20,5 +20,8 @@ jobs:
           submodules: recursive
           fetch-depth: 0
 
+      - name: Mark repository as safe
+        run: git config --global --add safe.directory '${{ github.workspace }}'
+
       - name: Build Hugo site
-        run: hugo --minify
+        run: hugo --minify --enableGitInfo=false
