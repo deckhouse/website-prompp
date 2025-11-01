@@ -25,3 +25,10 @@ jobs:
 
       - name: Build Hugo site
         run: hugo --minify --enableGitInfo=false
+
+      - name: Install htmltest
+        run: |
+          curl https://htmltest.wjdp.uk | bash
+
+      - name: Check links
+        run: bin/htmltest ./public
