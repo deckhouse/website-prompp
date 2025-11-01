@@ -5,6 +5,7 @@ HUGO ?= hugo
 BIND ?= 0.0.0.0
 SERVE_FLAGS ?= --cleanDestinationDir --bind=$(BIND)
 HUGOFLAGS ?= --minify
+MARKDOWNLINT_VERSION ?= v0.45.0
 
 .PHONY: help serve build clean lint-markdown lint-markdown-fix
 
@@ -24,6 +25,7 @@ help:
 	@echo "  PORT=$(PORT)"
 	@echo "  BIND=$(BIND)"
 	@echo "  BASEURL=$(BASEURL)"
+	@echo "  MARKDOWNLINT_VERSION=$(MARKDOWNLINT_VERSION)"
 
 up:
 	which werf >/dev/null || source $(trdl use werf 2 beta)
@@ -42,8 +44,8 @@ clean:
 
 lint-markdown:
 	@echo "Linting markdown files..."
-	@docker run --rm -v "$(PWD):/workdir" -w /workdir ghcr.io/igorshubovych/markdownlint-cli:v0.45.0 "**/*.md" -c markdownlint.yaml
+	@docker run --rm -v "$(PWD):/workdir" -w /workdir ghcr.io/igorshubovych/markdownlint-cli:$(MARKDOWNLINT_VERSION) "**/*.md" -c markdownlint.yaml
 
 lint-markdown-fix:
 	@echo "Fixing markdown files..."
-	@docker run --rm -v "$(PWD):/workdir" -w /workdir ghcr.io/igorshubovych/markdownlint-cli:v0.45.0 "**/*.md" -c markdownlint.yaml --fix
+	@docker run --rm -v "$(PWD):/workdir" -w /workdir ghcr.io/igorshubovych/markdownlint-cli:$(MARKDOWNLINT_VERSION) "**/*.md" -c markdownlint.yaml --fix
