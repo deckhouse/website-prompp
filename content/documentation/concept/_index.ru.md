@@ -18,6 +18,7 @@ weight: 3
   }
 }
 ```
+
 {{< /tab >}}
 {{< tab name="policy/v1beta1" >}}
 {{< alert >}}
@@ -37,16 +38,15 @@ test md
   }
 }
 ```
+
 {{< /tab >}}
 {{< /tabs >}}
-
 
 В данном разделе будет рассмотрено:
 
 - [Модель данных](/documentation/concept/data_models/),
 - [Служебные лейблы и метрики](./jobs_instanses/),
 - [Типы метрик](./metric_types/).
-
 
 {{< mermaid >}}
 graph TD;
@@ -55,4 +55,3 @@ graph TD;
   B-->D;
   C-->D;
 {{</ mermaid >}}
-

@@ -4,7 +4,7 @@ weight: 16
 
 ---
 
-Deckhouse Prom++ предоставляет API для remote read, доступный по эндпоинту `/api/v1/read`. Этот интерфейс ожидает сжатие с помощью алгоритма Snappy. Определение API можно найти [здесь](https://github.com/deckhouse/prompp/blob/main/prompb/remote.proto).
+Deckhouse Prom++ предоставляет API для remote read, доступный по эндпоинту `/api/v1/read`. Этот интерфейс ожидает сжатие с помощью алгоритма Snappy. Подробнее про API можно узнать в [репозитории Prom++](https://github.com/deckhouse/prompp/blob/main/prompb/remote.proto)
 
 > **Примечание:** Данный API в настоящее время не считается стабильным и может изменяться даже между минорными версиями Deckhouse Prom++.
 

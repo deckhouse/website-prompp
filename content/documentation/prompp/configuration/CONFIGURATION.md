@@ -39,7 +39,7 @@ Generalized placeholders are defined as follows:
 
 The remaining placeholders are described separately.
 
-An example of a correct file can be found [here](/config/testdata/conf.good.yml).
+View an [example of a correct file](/config/testdata/conf.good.yml).
 
 The global configuration sets parameters that apply to all other configuration contexts.
 They also serve as default values for other configuration sections.
