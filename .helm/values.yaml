@@ -1,3 +1,6 @@
+# This is a <PART> of URL in the template /products/<PART>/
+productCode: prompp
+
 priorityClassName:
   _default: develop
   production: production-medium
@@ -5,11 +8,10 @@ priorityClassName:
 
 ingressClass:
   _default: nginx
-  prod-25: nginx
 
 certificateClusterIssuer:
   _default: letsencrypt
-  prod-25: letsencrypt-nginx
+  production: letsencrypt-nginx
 
 resources:
   requests:

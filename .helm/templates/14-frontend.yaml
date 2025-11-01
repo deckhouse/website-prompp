@@ -1,5 +1,3 @@
-{{- $productCode := .Values.global.product_code }}
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -9,7 +7,7 @@ metadata:
     "pod-reloader.deckhouse.io/auto": "true"
   labels:
     service: frontend
-    app.kubernetes.io/part-of: deckhouse-web-{{ $productCode }}
+    app.kubernetes.io/part-of: deckhouse-web-{{ .Values.productCode }}
 spec:
   minReadySeconds: 5
   revisionHistoryLimit: 2

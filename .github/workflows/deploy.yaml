@@ -1,3 +1,5 @@
+# WF for deploying to test/stage envs on PR label 'deploy/test' or 'deploy/stage'
+
 name: Deploy on label
 
 on:
@@ -8,7 +10,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    if: startsWith(github.event.label.name, 'deploy/')
+    if: ${{ github.event.label.name == 'deploy/test' || github.event.label.name == 'deploy/test' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -21,28 +23,15 @@ jobs:
         run: |
           LABEL="${{ github.event.label.name }}"
           ENV="${LABEL#deploy/}"
-          PRODUCT_CODE="${{ vars.PRODUCT_CODE }}"
           echo "env=$ENV" >> $GITHUB_OUTPUT
-          echo "namespace=deckhouse-web-${PRODUCT_CODE}-${ENV}" >> $GITHUB_OUTPUT
 
-      - name: Validate that PRODUCT_CODE variable set
+      - name: Validate that Environment variable set
         run: |
-          if [ -z "${{ vars.PRODUCT_CODE }}" ]; then
-            echo "::error::PRODUCT_CODE variable is not set. Please set it in repository variables."
-            exit 1
-          fi
-          echo "PRODUCT_CODE: ${{ vars.PRODUCT_CODE }}"
           if [ -z "${{ steps.env.outputs.env }}" ]; then
             echo "::error::Can't determine environment name."
             exit 1
           fi
           echo "Environment: ${{ steps.env.outputs.env }}"
-
-      - name: Split repository name
-        id: split
-        env:
-          REPO: ${{ github.repository }}
-        run: echo "name=${REPO##*/}" >> $GITHUB_OUTPUT
 
       - name: Import secrets
         id: secrets
@@ -50,11 +39,15 @@ jobs:
         with:
           url: https://seguro.flant.com
           path: github
-          role: "${{ steps.split.outputs.name }}"
+          role: deckhouse-web-products
           method: jwt
           jwtGithubAudience: github-access-aud
           secrets: |
             projects/data/6db2f1ee-9b6f-4f4f-8381-2fb43060478a/github/registry_host DECKHOUSE_DEV_REGISTRY_HOST | DECKHOUSE_DEV_REGISTRY_HOST ;
+            projects/data/6db2f1ee-9b6f-4f4f-8381-2fb43060478a/github/registry_host DECKHOUSE_REGISTRY_READ_HOST | DECKHOUSE_REGISTRY_READ_HOST ;
+            projects/data/6db2f1ee-9b6f-4f4f-8381-2fb43060478a/github/registry_read_token login | DECKHOUSE_REGISTRY_READ_USER ;
+            projects/data/6db2f1ee-9b6f-4f4f-8381-2fb43060478a/github/registry_read_token password | DECKHOUSE_REGISTRY_READ_PASSWORD ;
+            projects/data/6db2f1ee-9b6f-4f4f-8381-2fb43060478a/github/documentation_deploy_secret KUBECONFIG_BASE64_DEV | KUBECONFIG_BASE64_DEV ;
             projects/data/101ceaca-97cd-462f-aed5-070d9b9de175/dev-registry/writetoken login | DECKHOUSE_DEV_REGISTRY_USER ;
             projects/data/101ceaca-97cd-462f-aed5-070d9b9de175/dev-registry/writetoken password | DECKHOUSE_DEV_REGISTRY_PASSWORD ;
 
@@ -67,6 +60,7 @@ jobs:
             echo "has_credentials=true" >> $GITHUB_OUTPUT
             echo "web_registry_path=${{steps.secrets.outputs.DECKHOUSE_DEV_REGISTRY_HOST }}/deckhouse/site" >> $GITHUB_OUTPUT
           fi
+
       - name: Login to dev registry
         uses: docker/login-action@v3
         if: ${{ steps.check_dev_registry.outputs.has_credentials == 'true' }}
@@ -79,30 +73,33 @@ jobs:
       - name: Check readonly registry credentials
         id: check_readonly_registry
         env:
-          HOST: ${{secrets.DECKHOUSE_REGISTRY_READ_HOST}}
+          HOST: ${{ steps.secrets.outputs.DECKHOUSE_REGISTRY_READ_HOST }}
         run: |
           if [[ -n $HOST ]]; then
             echo "has_credentials=true" >> $GITHUB_OUTPUT
-            echo "web_registry_path=${{secrets.DECKHOUSE_REGISTRY_READ_HOST }}/deckhouse/site" >> $GITHUB_OUTPUT
+            echo "web_registry_path=${{ steps.secrets.outputs.DECKHOUSE_REGISTRY_READ_HOST }}/deckhouse/site" >> $GITHUB_OUTPUT
           fi
+
       - name: Login to readonly registry
         uses: docker/login-action@v3
         if: ${{ steps.check_readonly_registry.outputs.has_credentials == 'true' }}
         with:
-          registry: ${{ secrets.DECKHOUSE_REGISTRY_READ_HOST }}
-          username: ${{ secrets.DECKHOUSE_REGISTRY_READ_USER }}
-          password: ${{ secrets.DECKHOUSE_REGISTRY_READ_PASSWORD }}
+          registry: ${{ steps.secrets.outputs.DECKHOUSE_REGISTRY_READ_HOST }}
+          username: ${{ steps.secrets.outputs.DECKHOUSE_REGISTRY_READ_USER }}
+          password: ${{ steps.secrets.outputs.DECKHOUSE_REGISTRY_READ_PASSWORD }}
           logout: false
 
       - name: Install werf
         uses: werf/actions/install@v2
 
-      - name: Deploy with werf converge
+      - name: Deploy to ${{ steps.env.outputs.env }}
         env:
-          WERF_NAMESPACE: ${{ steps.env.outputs.namespace }}
+          WERF_REPO: ${{ steps.check_dev_registry.outputs.web_registry_path }}
           WERF_ENV: ${{ steps.env.outputs.env }}
           WERF_KUBE_CONFIG_BASE64: ${{ secrets.KUBECONFIG_BASE64_DEV }}
+          WERF_SET_URL: "global.url=deckhouse.${{ steps.env.outputs.env }}.flant.com"
+          WERF_SET_URL_RU: "global.url_ru=deckhouse.ru.${{ steps.env.outputs.env }}.flant.com"
+
         run: |
-          . $(werf ci-env github --as-file)
           werf converge
 
