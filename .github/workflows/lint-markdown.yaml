@@ -18,7 +18,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Run markdownlint-cli
-        run: |
-          docker run --rm -v "$PWD:/workdir" -w /workdir ghcr.io/igorshubovych/markdownlint-cli:v0.45.0 "**/*.md" -c markdownlint.yaml
+      - name: Run markdownlint
+        run: make lint-markdown
 
