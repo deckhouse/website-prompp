@@ -42,7 +42,7 @@ data:
 
       keepalive_timeout  65;
 
-      ssi on;
+      ssi off;
       gzip off;
       port_in_redirect off;
       absolute_redirect off;
