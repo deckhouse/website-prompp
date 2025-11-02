@@ -33,7 +33,7 @@ They speed up the creation of graphs and analytical queries, since aggregated da
 **Alerting Rules** – define conditions (based on PromQL) for generating alerts if a metric exceeds specified limits or satisfies a certain expression. They support different levels of criticality, time intervals, ignoring certain labels, and other fine-grained settings.
 When triggered, they send alert data to Alertmanager for further routing.
 
-# Integration and collection of monitoring data from various sources
+## Integration and collection of monitoring data from various sources
 
 Deckhouse Prom++ easily integrates with numerous systems and services thanks to its standard metric export format. The Prometheus ecosystem already has a huge number of exporters that allow you to collect metrics from various systems, such as databases (MySQL, PostgreSQL, MongoDB), web servers (Nginx, Apache), infrastructure components (Docker, Kubernetes, etcd), etc.
 

@@ -39,7 +39,7 @@ Deckhouse Prom++ может перезагружать свою конфигур
 
 Остальные плейсхолдеры описаны отдельно.
 
-Пример корректного файла можно найти [здесь](/config/testdata/conf.good.yml).
+Ознакомьтесь с [примером корректного файла](/config/testdata/conf.good.yml).
 
 Глобальная конфигурация задаёт параметры, действующие во всех остальных контекстах конфигурации.
 Они также служат значениями по умолчанию для других разделов конфигурации.
@@ -1411,28 +1411,28 @@ query: <string>
 
 Файлы должны содержать список статических конфигураций, используя следующие форматы:
 
-**JSON**
+- JSON
 
-```json
-[
-  {
-    "targets": [ "<host>", ... ],
-    "labels": {
-      "<labelname>": "<labelvalue>", ...
-    }
-  },
-  ...
-]
-```
+  ```json
+  [
+    {
+      "targets": [ "<host>", ... ],
+      "labels": {
+        "<labelname>": "<labelvalue>", ...
+      }
+    },
+    ...
+  ]
+  ```
 
-**YAML**
+- YAML
 
-```yaml
-- targets:
-  [ - '<host>' ]
-  labels:
-    [ <labelname>: <labelvalue> ... ]
-```
+  ```yaml
+  - targets:
+    [ - '<host>' ]
+    labels:
+      [ <labelname>: <labelvalue> ... ]
+  ```
 
 В качестве резервного варианта содержимое файла также перечитывается периодически с указанным интервалом обновления.
 
@@ -1948,7 +1948,7 @@ Linode APIv4.
 * `__meta_linode_status`: статус инстанса linode
 * `__meta_linode_tags`: список тегов инстанса linode, объединенных через разделитель тегов
 * `__meta_linode_group`: группа отображения, членом которой является инстанс linode
-* `__meta_linode_gpus`: количество GPU инстанса linode 
+* `__meta_linode_gpus`: количество GPU инстанса linode
 * `__meta_linode_hypervisor`: программное обеспечение виртуализации, управляющее инстансом linode
 * `__meta_linode_backups`: статус службы резервного копирования инстанса linode
 * `__meta_linode_specs_disk_bytes`: объем дискового пространства, доступного инстансу linode
@@ -2032,7 +2032,7 @@ servers:
 ### nerve_sd_config
 
 Конфигурации SD для Nerve позволяют получать цели сбора из [Nerve от AirBnB]
-(https://github.com/airbnb/nerve), которые хранятся в
+(<https://github.com/airbnb/nerve>), которые хранятся в
 [Zookeeper](https://zookeeper.apache.org/).
 
 Следующие мета лейблы доступны на целях во время [переназначения](#relabel_config):
@@ -2087,7 +2087,7 @@ paths:
 ### serverset_sd_config
 
 Конфигурации SD для Serverset позволяют получать цели сбора из [Serversets]
-(https://github.com/twitter/finagle/tree/develop/finagle-serversets), которые хранятся в
+(<https://github.com/twitter/finagle/tree/develop/finagle-serversets>), которые хранятся в
 [Zookeeper](https://zookeeper.apache.org/). Serversets обычно
 используются [Finagle](https://twitter.github.io/finagle/) и
 [Aurora](https://aurora.apache.org/).

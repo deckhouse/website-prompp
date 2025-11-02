@@ -48,14 +48,14 @@ By default, the database is stored in ./data (option --storage.tsdb.path).
 ```
 
 Deckhouse Prom++ should start successfully. Open your browser and go to the Deckhouse Prom++ status page at:
-http://localhost:9090. Give it a few seconds to collect data about itself via its own HTTP metrics endpoint.
+<http://localhost:9090>. Give it a few seconds to collect data about itself via its own HTTP metrics endpoint.
 You can also check if Deckhouse Prom++ is publishing its metrics by going to:
-http://localhost:9090/metrics.
+<http://localhost:9090/metrics>.
 
 ### Using the expression browser
 
-Let's examine the data that Deckhouse Prom++ has collected about itself. Go to the built-in expression browser of Deckhouse Prom++ at http://localhost:9090/graph and select the "Table" view on the "Graph" tab.
-As you can see on the page http://localhost:9090/metrics, one of the metrics that Deckhouse Prom++ exports about itself is prometheus_target_interval_length_seconds (the actual interval between polls of target objects). Enter the following expression in the query console and click "Execute":
+Let's examine the data that Deckhouse Prom++ has collected about itself. Go to the built-in expression browser of Deckhouse Prom++ at <http://localhost:9090/graph> and select the "Table" view on the "Graph" tab.
+As you can see on the page <http://localhost:9090/metrics>, one of the metrics that Deckhouse Prom++ exports about itself is prometheus_target_interval_length_seconds (the actual interval between polls of target objects). Enter the following expression in the query console and click "Execute":
 prometheus_target_interval_length_seconds
 
 This will return several time series (with the latest stored values), all with the metric name prometheus_target_interval_length_seconds, but with different labels indicating different percentile delays and target grouping intervals.
@@ -67,7 +67,7 @@ count(prometheus_target_interval_length_seconds)
 
 ### Using the graph interface
 
-To build a graph based on expressions, go to http://localhost:9090/graph and select the "Graph" tab.
+To build a graph based on expressions, go to <http://localhost:9090/graph> and select the "Graph" tab.
 For example, to build a graph of the rate of new chunks created in a self-scanning instance of Deckhouse Prom++, use:
 rate(prometheus_tsdb_head_chunks_created_total[1m])
 

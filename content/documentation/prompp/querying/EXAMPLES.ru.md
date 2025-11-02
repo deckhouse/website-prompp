@@ -44,7 +44,7 @@ http_requests_total{status!~"4.."}
 
 ## Подзапросы
 
-Возврат 5-минутного [rate](https://Deckhouse Prom++.io/docs/Deckhouse Prom++/latest/querying/functions/#rate) метрики `http_requests_total` за последние 30 минут с разрешением в 1 минуту:
+Возврат 5-минутного [rate](<https://Deckhouse> Prom++.io/docs/Deckhouse Prom++/latest/querying/functions/#rate) метрики `http_requests_total` за последние 30 минут с разрешением в 1 минуту:
 
 ```yml
 rate(http_requests_total[5m])[30m:1m]
@@ -56,7 +56,7 @@ rate(http_requests_total[5m])[30m:1m]
 max_over_time(deriv(rate(distance_covered_total[5s])[30s:5s])[10m:])
 ```
 
-## Использование функций, операторов и т.д.
+## Использование функций, операторов и т.д
 
 Возвращает rate-показатель в секунду для всех временных рядов с метрикой http_requests_total, измеренный за последние 5 минут:
 
