@@ -15,6 +15,8 @@ concurrency:
 permissions:
   contents: read
   id-token: write
+  issues: write
+  pull-requests: write
 
 jobs:
   deploy:
@@ -34,6 +36,22 @@ jobs:
           LABEL="${{ github.event.label.name }}"
           ENV="${LABEL#deploy/}"
           echo "env=$ENV" >> $GITHUB_OUTPUT
+
+      - name: Create deployment comment
+        id: comment
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const env = '${{ steps.env.outputs.env }}';
+            const comment = await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              body: `## 🚀 Deployment Started\n\n**Environment:** \`${env}\`\n\n**Status:** ⏳ Deploying...\n\n_This comment will be updated with deployment status._`
+            });
+            core.setOutput('comment_id', comment.data.id);
+            console.log(`Created comment: ${comment.data.id}`);
 
       - name: Validate that Environment variable set
         run: |
@@ -103,6 +121,7 @@ jobs:
         uses: werf/actions/install@v2
 
       - name: Deploy to ${{ steps.env.outputs.env }}
+        id: deploy
         env:
           WERF_REPO: ${{ steps.check_dev_registry.outputs.web_registry_path }}
           WERF_ENV: ${{ steps.env.outputs.env }}
@@ -112,4 +131,59 @@ jobs:
 
         run: |
           werf converge
+
+      - name: Update comment - deployment succeeded
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const env = '${{ steps.env.outputs.env }}';
+            const commentId = ${{ steps.comment.outputs.comment_id }};
+            const repoName = context.repo.repo;
+            const appName = repoName.startsWith('website-') ? repoName.replace(/^website-/, '') : repoName;
+            const urlEn = `https://${appName}.app-${env}.flant.com/`;
+            const urlRu = `https://${appName}.ru.app-${env}.flant.com/`;
+            
+            await github.rest.issues.updateComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: commentId,
+              body: `## ✅ Deployment Succeeded\n\n**Environment:** \`${env}\`\n\n**Status:** ✅ Successfully deployed\n\n### 🌐 Access URLs\n\n- 🇬🇧 English: ${urlEn}\n- 🇷🇺 Russian: ${urlRu}\n\n---\n_Deployed from branch: \`${{ github.event.pull_request.head.ref }}\`_`
+            });
+            console.log(`Updated comment ${commentId} with success status`);
+
+      - name: Update comment - deployment failed
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const env = '${{ steps.env.outputs.env }}';
+            const commentId = ${{ steps.comment.outputs.comment_id }};
+            
+            await github.rest.issues.updateComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: commentId,
+              body: `## ❌ Deployment Failed\n\n**Environment:** \`${env}\`\n\n**Status:** ❌ Deployment failed\n\nPlease check the workflow logs for details.\n\n---\n_Deployed from branch: \`${{ github.event.pull_request.head.ref }}\`_`
+            });
+            console.log(`Updated comment ${commentId} with failure status`);
+
+      - name: Remove deploy label
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const label = context.payload.label.name;
+            if (label && (label === 'deploy/test' || label === 'deploy/stage')) {
+              await github.rest.issues.removeLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number,
+                name: label
+              });
+              console.log(`Removed label: ${label}`);
+            }
 
