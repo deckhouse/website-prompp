@@ -13,6 +13,7 @@ help:
 	@echo "Usage: make [target]"
 	@echo
 	@echo "Common targets:"
+	@echo "  up               Start documentation (available at http://localhost and http://ru.localhost)"
 	@echo "  serve            Start Hugo dev server (hugo serve --cleanDestinationDir)"
 	@echo "  build            Build the site to ./public"
 	@echo "  clean            Remove generated public files"
@@ -29,7 +30,7 @@ help:
 
 up:
 	which werf >/dev/null || source $(trdl use werf 2 beta)
-	werf compose up --dev
+	werf compose up
 
 serve:
 	$(HUGO) serve $(SERVE_FLAGS)
