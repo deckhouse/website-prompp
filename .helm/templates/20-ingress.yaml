@@ -19,7 +19,7 @@ metadata:
       ssi_silent_errors on;
 {{- if ne $.Values.werf.env "production" }}
     nginx.ingress.kubernetes.io/auth-signin: https://$host/dex-authenticator/sign_in
-    nginx.ingress.kubernetes.io/auth-url: https://{{ $.Chart.Name }}-{{ .Lang }}-dex-authenticator.deckhouse-web-{{ $.Values.productCode }}-{{ $.Values.werf.env }}.svc.cluster.local/dex-authenticator/auth
+    nginx.ingress.kubernetes.io/auth-url: https://deckhouse-web-{{ .Lang }}-dex-authenticator.deckhouse-web-{{ $.Values.werf.env }}.svc.cluster.local/dex-authenticator/auth
     nginx.ingress.kubernetes.io/auth-response-headers: X-Auth-Request-User,X-Auth-Request-Email
 {{- end }}
 spec:
@@ -60,35 +60,5 @@ spec:
             name: frontend
             port:
               name: http
-{{- if ne $.Values.werf.env "production" }}
----
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: {{ $.Chart.Name }}-{{ .Lang }}-cert
-  annotations:
-    werf.io/fail-mode: IgnoreAndContinueDeployProcess
-    werf.io/track-termination-mode: NonBlocking
-spec:
-  certificateOwnerRef: false
-  secretName: tls-{{ .URL }}
-  issuerRef:
-    kind: ClusterIssuer
-    name: {{ pluck $.Values.werf.env $.Values.certificateClusterIssuer | first | default $.Values.certificateClusterIssuer._default | quote }}
-  commonName: {{ .URL }}
-  dnsNames:
-  - {{ .URL }}
----
-apiVersion: deckhouse.io/v1
-kind: DexAuthenticator
-metadata:
-  name: {{ $.Chart.Name }}-{{ .Lang }}
-spec:
-  applicationDomain: {{ .URL }}
-  sendAuthorizationHeader: false
-  applicationIngressCertificateSecretName: tls-{{ .URL }}
-  applicationIngressClassName: {{ pluck $.Values.werf.env $.Values.ingressClass | first | default $.Values.ingressClass._default | quote }}
-  keepUsersLoggedInFor: "720h"
-{{- end }}
 ---
 {{ end -}}
