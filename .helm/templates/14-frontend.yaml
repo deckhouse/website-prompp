@@ -5,7 +5,7 @@ metadata:
   annotations:
     "werf.io/replicas-on-creation": "1"
     "pod-reloader.deckhouse.io/auto": "true"
-    "werf.io/deploy-dependency-db": state=present,kind=ConfigMap,name=nginx-config
+    "werf.io/weight": "2"
   labels:
     service: frontend
     app.kubernetes.io/part-of: deckhouse-web-{{ .Values.productCode }}
