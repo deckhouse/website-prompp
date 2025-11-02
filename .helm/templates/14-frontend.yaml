@@ -26,6 +26,7 @@ spec:
       containers:
         - name: web
           image: {{ index .Values.werf.image "web" }}
+          command: ["nginx", "-g", "daemon off;"]
           {{- include "resources" . | nindent 10 }}
           ports:
           - containerPort: 8080
