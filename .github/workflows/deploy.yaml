@@ -161,13 +161,29 @@ jobs:
           script: |
             const env = '${{ steps.env.outputs.env }}';
             const commentId = ${{ steps.comment.outputs.comment_id }};
-            const workflowUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            
+            // Get the job ID for the failed job
+            const jobs = await github.rest.actions.listJobsForWorkflowRun({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: context.runId
+            });
+            
+            const job = jobs.data.jobs.find(j => j.name === 'deploy');
+            const jobId = job ? job.id : null;
+            
+            let logsUrl;
+            if (jobId) {
+              logsUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}/job/${jobId}`;
+            } else {
+              logsUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            }
             
             await github.rest.issues.updateComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               comment_id: commentId,
-              body: `## ❌ Deployment Failed\n\n**Environment:** \`${env}\`\n\nPlease check the [workflow logs](${workflowUrl}) for details.`
+              body: `## ❌ Deployment Failed\n\n**Environment:** \`${env}\`\n\nPlease check the [workflow logs](${logsUrl}) for details.`
             });
             console.log(`Updated comment ${commentId} with failure status`);
 
