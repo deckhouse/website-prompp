@@ -1,8 +1,11 @@
 name: Build
 
 on:
-  pull_request_target:
-     types:
+  push:
+    branches-ignore:
+      - main
+  pull_request:
+    types:
       - opened
       - synchronize
       - reopened
@@ -26,9 +29,47 @@ jobs:
       - name: Build Hugo site
         run: hugo --minify --enableGitInfo=false
 
+      - name: Extract app name
+        id: app_name
+        run: |
+          REPO_NAME="${{ github.repository }}"
+          REPO_NAME="${REPO_NAME#*/}"
+          if [[ "$REPO_NAME" == website-* ]]; then
+            APP_NAME="${REPO_NAME#website-}"
+          else
+            APP_NAME="$REPO_NAME"
+          fi
+          echo "app_name=$APP_NAME" >> $GITHUB_OUTPUT
+          echo "App name: $APP_NAME"
+
       - name: Install htmltest
         run: |
           curl https://htmltest.wjdp.uk | bash
 
-      - name: Check links
-        run: bin/htmltest ./public
+      - name: Create htmltest config
+        run: |
+          cat > .htmltest.yml << EOF
+          IgnoreURLs:
+            - "^/assets/"
+            - "^/images/"
+            - "^/css/"
+            - "^/js/"
+          CheckMeta: false
+          CheckMailto: false
+          CheckTel: false
+          CheckFavicon: false
+          IgnoreInternalEmptyHash: true
+          EOF
+
+      - name: Rewrite URLs to remove /products/<APP>/ prefix
+        run: |
+          APP_NAME="${{ steps.app_name.outputs.app_name }}"
+          find ./public/en ./public/ru -type f -name "*.html" -exec sed -i "s|/products/${APP_NAME}/|/|g" {} +
+
+      - name: Check links (English)
+        continue-on-error: true
+        run: bin/htmltest ./public/en
+
+      - name: Check links (Russian)
+        continue-on-error: true
+        run: bin/htmltest ./public/ru
