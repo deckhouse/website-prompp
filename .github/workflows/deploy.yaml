@@ -7,6 +7,15 @@ on:
     types:
       - labeled
 
+# Cancel in-progress jobs for the same tag/branch.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event.label.name }}-deploy
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  id-token: write
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
