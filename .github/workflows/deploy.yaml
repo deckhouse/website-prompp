@@ -161,12 +161,13 @@ jobs:
           script: |
             const env = '${{ steps.env.outputs.env }}';
             const commentId = ${{ steps.comment.outputs.comment_id }};
+            const workflowUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
             
             await github.rest.issues.updateComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               comment_id: commentId,
-              body: `## ❌ Deployment Failed\n\n**Environment:** \`${env}\`\n\nPlease check the workflow logs for details.`
+              body: `## ❌ Deployment Failed\n\n**Environment:** \`${env}\`\n\nPlease check the [workflow logs](${workflowUrl}) for details.`
             });
             console.log(`Updated comment ${commentId} with failure status`);
 
