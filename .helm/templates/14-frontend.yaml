@@ -5,6 +5,7 @@ metadata:
   annotations:
     "werf.io/replicas-on-creation": "1"
     "pod-reloader.deckhouse.io/auto": "true"
+    "werf.io/weight": "2"
   labels:
     service: frontend
     app.kubernetes.io/part-of: deckhouse-web-{{ .Values.productCode }}
@@ -25,6 +26,7 @@ spec:
       containers:
         - name: web
           image: {{ index .Values.werf.image "web" }}
+          command: ["nginx", "-g", "daemon off;"]
           {{- include "resources" . | nindent 10 }}
           ports:
           - containerPort: 8080

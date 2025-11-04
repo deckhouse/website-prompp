@@ -2,6 +2,8 @@ kind: ConfigMap
 apiVersion: v1
 metadata:
   name: nginx-config
+  annotations:
+    werf.io/weight: "1"
 data:
   nginx.conf: |-
     worker_processes auto;
@@ -15,8 +17,8 @@ data:
     }
 
     http {
-      include       /usr/conf/mime.types;
-      default_type  application/octet-stream;
+      include               /etc/nginx/mime.types;
+      default_type          application/octet-stream;
 
       client_body_temp_path /tmp/client_temp;
       proxy_temp_path       /tmp/proxy_temp;
@@ -40,7 +42,7 @@ data:
 
       keepalive_timeout  65;
 
-      ssi on;
+      ssi off;
       gzip off;
       port_in_redirect off;
       absolute_redirect off;
