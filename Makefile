@@ -7,7 +7,10 @@ SERVE_FLAGS ?= --cleanDestinationDir --bind=$(BIND)
 HUGOFLAGS ?= --minify
 MARKDOWNLINT_VERSION ?= v0.45.0
 
-.PHONY: help serve build clean lint-markdown lint-markdown-fix mod
+CURRENT_UID ?= $(shell id -u)
+CURRENT_GID ?= $(shell id -g)
+
+.PHONY: help serve build down lint-markdown lint-markdown-fix mod
 
 help:
 	@echo "Usage: make [target]"
@@ -16,7 +19,7 @@ help:
 	@echo "  up               Start documentation (available at http://localhost and http://ru.localhost)"
 	@echo "  serve            Start Hugo dev server (hugo serve --cleanDestinationDir)"
 	@echo "  build            Build the site to ./public"
-	@echo "  clean            Remove generated public files"
+	@echo "  down             Stop and remove documentation containers"
 	@echo "  lint-markdown    Lint markdown files"
 	@echo "  lint-markdown-fix Fix markdown files automatically"
 	@echo "  mod              Clean up Hugo modules (hugo mod tidy)"
@@ -30,8 +33,10 @@ help:
 	@echo "  MARKDOWNLINT_VERSION=$(MARKDOWNLINT_VERSION)"
 
 up:
-	which werf >/dev/null || source $(trdl use werf 2 beta)
-	werf compose up
+	@UID=$(CURRENT_UID) GID=$(CURRENT_GID) docker compose up
+
+down:
+	docker compose rm -f
 
 serve:
 	$(HUGO) serve $(SERVE_FLAGS)
@@ -39,10 +44,6 @@ serve:
 build:
 	@echo "Building site to ./public..."
 	$(HUGO) $(HUGOFLAGS)
-
-clean:
-	@echo "Removing ./public/*"
-	@rm -rf public/*
 
 lint-markdown:
 	@echo "Linting markdown files..."
