@@ -13,8 +13,8 @@ Deckhouse Prom++ использует другой формат WAL (Write-Ahead
 ## Предварительно скомпилированные бинарные файлы
 
 1. Скачайте последний бинарный файл:
-   * [amd архитектура](https://deckhouse.ru/products/prompp/documentation/downloads/latest/prompp-binaries-amd64.tar.gz)
-   * [arm архитектура](https://deckhouse.ru/products/prompp/documentation/downloads/latest/prompp-binaries-arm64.tar.gz)
+   * [amd архитектура](/products/prompp/documentation/downloads/latest/prompp-binaries-amd64.tar.gz)
+   * [arm архитектура](/products/prompp/documentation/downloads/latest/prompp-binaries-arm64.tar.gz)
 
 1. Распакуйте его:
 

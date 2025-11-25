@@ -13,8 +13,8 @@ See the [Migration Guide](#migration-from-prometheus) for detailed conversion st
 ## Precompiled binary files
 
 1. Download the latest binary file:
-   * [amd architecture](https://deckhouse.ru/products/prompp/documentation/downloads/latest/prompp-binaries-amd64.tar.gz)
-   * [arm architecture](https://deckhouse.ru/products/prompp/documentation/downloads/latest/prompp-binaries-arm64.tar.gz)
+   * [amd architecture](/products/prompp/documentation/downloads/latest/prompp-binaries-amd64.tar.gz)
+   * [arm architecture](/products/prompp/documentation/downloads/latest/prompp-binaries-arm64.tar.gz)
 
 1. Unpack it:
 
