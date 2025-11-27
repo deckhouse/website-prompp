@@ -39,7 +39,7 @@ Deckhouse Prom++ может перезагружать свою конфигур
 
 Остальные плейсхолдеры описаны отдельно.
 
-Ознакомьтесь с [примером корректного файла](/config/testdata/conf.good.yml).
+Ознакомьтесь с [примером корректного файла](https://github.com/deckhouse/prompp/blob/pp/config/testdata/conf.good.yml).
 
 Глобальная конфигурация задаёт параметры, действующие во всех остальных контекстах конфигурации.
 Они также служат значениями по умолчанию для других разделов конфигурации.
@@ -840,7 +840,7 @@ tags:
 
 Конфигурации SD для DigitalOcean позволяют получать цели для опроса из API Droplets [DigitalOcean](https://www.digitalocean.com/).
 Это обнаружение сервисов по умолчанию использует публичный IPv4-адрес, но это можно
-изменить с помощью переназначения, как показано в [файле конфигурации digitalocean-sd для Deckhouse Prom++](/documentation/examples/prometheus-digitalocean.yml).
+изменить с помощью переназначения, как показано в [файле конфигурации digitalocean-sd для Deckhouse Prom++](https://github.com/deckhouse/prompp/tree/pp/documentation/examples/prometheus-digitalocean.yml).
 
 Следующие мета лейблы доступны на целях во время [переназначения](#relabel_config):
 
@@ -932,7 +932,7 @@ host: <string>
 может быть более эффективно использовать Docker API напрямую, который имеет базовую поддержку
 фильтрации контейнеров (с использованием `filters`).
 
-Смотрите [этот пример конфигурационного файла Deckhouse Prom++](/documentation/examples/prometheus-docker.yml)
+Смотрите [этот пример конфигурационного файла Deckhouse Prom++](https://github.com/deckhouse/prompp/tree/pp/documentation/examples/prometheus-docker.yml)
 для детального примера настройки Deckhouse Prom++ для Docker Engine.
 
 ### dockerswarm_sd_config
@@ -1061,7 +1061,7 @@ role: <string>
 может быть более эффективно использовать API Swarm напрямую, который имеет базовую поддержку
 фильтрации узлов (с использованием `filters`).
 
-Смотрите [этот пример конфигурационного файла Deckhouse Prom++](/documentation/examples/prometheus-dockerswarm.yml)
+Смотрите [этот пример конфигурационного файла Deckhouse Prom++](https://github.com/deckhouse/prompp/tree/pp/documentation/examples/prometheus-dockerswarm.yml)
 для детального примера настройки Deckhouse Prom++ для Docker Swarm.
 
 ### dns_sd_config
@@ -1506,7 +1506,7 @@ zone: <string>
 
 ### hetzner_sd_config
 
-Конфигурации Hetzner SD позволяют извлекать цели сбора метрик из API [Hetzner](https://www.hetzner.com/) [Cloud](https://www.hetzner.cloud/) и API [Robot](https://docs.hetzner.com/robot/). Это обнаружение сервисов по умолчанию использует публичный IPv4-адрес, но это можно изменить с помощью релейблинга, как показано в [файле конфигурации Deckhouse Prom++ hetzner-sd](/documentation/examples/prometheus-hetzner.yml).
+Конфигурации Hetzner SD позволяют извлекать цели сбора метрик из API [Hetzner](https://www.hetzner.com/) [Cloud](https://www.hetzner.cloud/) и API [Robot](https://docs.hetzner.com/robot/). Это обнаружение сервисов по умолчанию использует публичный IPv4-адрес, но это можно изменить с помощью релейблинга, как показано в [файле конфигурации Deckhouse Prom++ hetzner-sd](https://github.com/deckhouse/prompp/tree/pp/documentation/examples/prometheus-hetzner.yml).
 
 Следующие мета лейблы доступны на всех целях во время [релейблинга](#relabel_config):
 
@@ -1823,7 +1823,7 @@ attach_metadata:
 [ <http_config> ]
 ```
 
-См. [этот пример конфигурационного файла Deckhouse Prom++](/documentation/examples/prometheus-kubernetes.yml)
+См. [этот пример конфигурационного файла Deckhouse Prom++](https://github.com/deckhouse/prompp/tree/pp/documentation/examples/prometheus-kubernetes.yml)
 для подробного примера настройки Deckhouse Prom++ для Kubernetes.
 
 Вы можете ознакомиться с 3-й стороной [Prometheus Operator](https://github.com/prometheus-operator/prometheus-operator),
@@ -1928,7 +1928,7 @@ server: <string>
 Linode APIv4.
 Эта служба обнаружения по умолчанию использует публичный IPv4 адрес, но это может быть
 изменено с помощью переназначения, как показано в [конфигурационном файле linode-sd
-для Deckhouse Prom++](/documentation/examples/prometheus-linode.yml).
+для Deckhouse Prom++](https://github.com/deckhouse/prompp/tree/pp/documentation/examples/prometheus-linode.yml).
 
 Токен APIv4 Linode должен быть создан с правами: `linodes:read_only`, `ips:read_only`, и `events:read_only`.
 
@@ -2023,7 +2023,7 @@ servers:
 По умолчанию каждое приложение, перечисленное в Marathon, будет собираться Deckhouse Prom++. Если не все
 ваши сервисы предоставляют метрики Deckhouse Prom++, вы можете использовать лейбл Marathon и
 переназначение Deckhouse Prom++, чтобы контролировать, какие инстансы будут фактически собираться.
-См. [конфигурационный файл marathon-sd для Deckhouse Prom++](/documentation/examples/prometheus-marathon.yml)
+См. [конфигурационный файл marathon-sd для Deckhouse Prom++](https://github.com/deckhouse/prompp/tree/pp/documentation/examples/prometheus-marathon.yml)
 для практического примера настройки вашего приложения Marathon и конфигурации Deckhouse Prom++.
 
 По умолчанию все приложения будут отображаться как одна задача в Deckhouse Prom++ (та, которая указана
@@ -2226,7 +2226,7 @@ server: <string>
 [ <http_config> ]
 ```
 
-См. [файл конфигурации eureka-sd для Deckhouse Prom++](/documentation/examples/prometheus-eureka.yml)
+См. [файл конфигурации eureka-sd для Deckhouse Prom++](https://github.com/deckhouse/prompp/tree/pp/documentation/examples/prometheus-eureka.yml)
 для практического примера настройки вашего приложения Eureka и конфигурации Deckhouse Prom++.
 
 ### scaleway_sd_config
@@ -2263,7 +2263,7 @@ server: <string>
 * `__meta_scaleway_instance_zone`: зона сервера (например, `fr-par-1`, полный список [здесь](https://developers.scaleway.com/en/products/instance/api/#introduction))
 
 Эта роль использует первый найденный адрес в следующем порядке: частный IPv4, публичный IPv4, публичный IPv6. Это можно
-изменить с помощью переназначения, как показано в [файле конфигурации scaleway-sd для Deckhouse Prom++](/documentation/examples/prometheus-scaleway.yml).
+изменить с помощью переназначения, как показано в [файле конфигурации scaleway-sd для Deckhouse Prom++](https://github.com/deckhouse/prompp/tree/pp/documentation/examples/prometheus-scaleway.yml).
 Если у инстанса нет адреса до переназначения, он не будет добавлен в список целей, и вы не сможете его переназначить.
 
 #### Роль baremetal
@@ -2281,7 +2281,7 @@ server: <string>
 * `__meta_scaleway_baremetal_zone`: зона сервера (например, `fr-par-1`, полный список [здесь](https://developers.scaleway.com/en/products/instance/api/#introduction))
 
 Эта роль по умолчанию использует публичный IPv4-адрес. Это можно
-изменить с помощью переназначения, как показано в [файле конфигурации scaleway-sd для Deckhouse Prom++](/documentation/examples/prometheus-scaleway.yml).
+изменить с помощью переназначения, как показано в [файле конфигурации scaleway-sd для Deckhouse Prom++](https://github.com/deckhouse/prompp/tree/pp/documentation/examples/prometheus-scaleway.yml).
 
 См. ниже параметры конфигурации для обнаружения Scaleway:
 
@@ -2368,7 +2368,7 @@ password: <secret>
 [ <http_config> ]
 ```
 
-См. [файл конфигурации uyuni-sd для Deckhouse Prom++](/documentation/examples/prometheus-uyuni.yml)
+См. [файл конфигурации uyuni-sd для Deckhouse Prom++](https://github.com/deckhouse/prompp/tree/pp/documentation/examples/prometheus-uyuni.yml)
 для практического примера настройки конфигурации Uyuni Deckhouse Prom++.
 
 ### vultr_sd_config
@@ -2376,7 +2376,7 @@ password: <secret>
 Конфигурации Vultr SD позволяют получать цели для сбора данных с [Vultr](https://www.vultr.com/).
 
 Это обнаружение сервисов по умолчанию использует основной IPv4-адрес, который можно
-изменить с помощью переназначения, как показано в [файле конфигурации vultr-sd для Deckhouse Prom++](/documentation/examples/prometheus-vultr.yml).
+изменить с помощью переназначения, как показано в [файле конфигурации vultr-sd для Deckhouse Prom++](https://github.com/deckhouse/prompp/tree/pp/documentation/examples/prometheus-vultr.yml).
 
 Следующие мета лейблы доступны на целях во время [переназначения](#relabel_config):
 
@@ -2691,7 +2691,7 @@ alert_relabel_configs:
 
 `write_relabel_configs` — это переназначение, применяемое к образцам перед их отправкой на удаленную конечную точку. Переназначение записи применяется после внешних лейблов. Это может быть использовано для ограничения отправляемых образцов.
 
-Существует [небольшая демонстрация](/documentation/examples/remote_storage) использования этой функциональности.
+Существует [небольшая демонстрация](https://github.com/deckhouse/prompp/tree/pp/documentation/examples/remote_storage) использования этой функциональности.
 
 ```yaml
 # URL конечной точки для отправки образцов.

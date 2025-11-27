@@ -39,7 +39,7 @@ Generalized placeholders are defined as follows:
 
 The remaining placeholders are described separately.
 
-View an [example of a correct file](/config/testdata/conf.good.yml).
+View an [example of a correct file](https://github.com/deckhouse/prompp/blob/pp/config/testdata/conf.good.yml).
 
 The global configuration sets parameters that apply to all other configuration contexts.
 They also serve as default values for other configuration sections.

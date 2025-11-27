@@ -47,6 +47,10 @@ data:
       port_in_redirect off;
       absolute_redirect off;
 
+      proxy_buffer_size 8k;
+      fastcgi_buffers 8 16k;
+      fastcgi_buffer_size 16k;
+
       map $host $lang {
           hostnames;
           "deckhouse.ru"   "ru";
@@ -66,6 +70,60 @@ data:
 
         charset utf-8;
         access_log     /dev/stdout json_combined;
+
+        proxy_intercept_errors on;
+        proxy_ignore_headers Cache-Control Expires Set-Cookie;
+
+        set $log_location "undef";
+
+        location ~ /downloads/source/(?<path>.+(?<ext>\.tar\.gz|\.zip))$ {
+          set $download_url https://github.com/deckhouse/prompp/archive/$path;
+          set $log_location "source";
+
+          add_header Content-Disposition "attachment; filename=prompp-source$ext";
+
+          proxy_pass $download_url;
+          error_page 302 = @handle_redirect;
+        }
+
+        location ~ /downloads/latest/(?<file>.+)$ {
+          set $download_url https://github.com/deckhouse/prompp/releases/latest/download/$file;
+          set $log_location "downloads";
+
+          add_header Content-Disposition "attachment; filename=$file";
+
+          proxy_pass $download_url;
+          error_page 302 = @handle_redirect;
+        }
+
+        location ~ /downloads/(?<version>[^/]+)/(?<file>.+)$ {
+          set $download_url https://github.com/deckhouse/prompp/releases/download/$version/$file;
+          set $log_location "downloads";
+
+          add_header Content-Disposition "attachment; filename=$file";
+
+          proxy_pass $download_url;
+          error_page 302 = @handle_redirect;
+        }
+
+        location @handle_redirect {
+          internal;
+
+          set $log_location "downloads";
+          set $location $upstream_http_location;
+
+          error_page 302 = @handle_redirect;
+
+          proxy_pass $location;
+          proxy_cache_key $uri;
+          proxy_cache cache;
+          proxy_cache_valid 200 1h;
+          proxy_cache_valid 404 1m;
+          proxy_cache_use_stale error timeout invalid_header updating http_500 http_502 http_503 http_504;
+          proxy_cache_lock on;
+          proxy_cache_revalidate on;
+          proxy_cache_background_update on;
+        }
 
         location /link_test_report.txt {
             deny all;
