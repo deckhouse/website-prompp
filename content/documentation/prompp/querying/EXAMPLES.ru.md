@@ -44,7 +44,7 @@ http_requests_total{status!~"4.."}
 
 ## Подзапросы
 
-Возврат 5-минутного [rate](products/prompp/documentation/prompp/querying/functions_promql/#rate) метрики `http_requests_total` за последние 30 минут с разрешением в 1 минуту:
+Возврат 5-минутного [rate](./functions_promql/#rate) метрики `http_requests_total` за последние 30 минут с разрешением в 1 минуту:
 
 ```yml
 rate(http_requests_total[5m])[30m:1m]
