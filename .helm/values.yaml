@@ -18,3 +18,5 @@ resources:
     memory:
       _default: 32M
       web-production: 150M
+
+resolver: kube-dns.kube-system.svc.cluster.local
