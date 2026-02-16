@@ -33,13 +33,22 @@ Deckhouse Prom++ использует другой формат WAL (Write-Ahead
 
 ## Docker
 
-Deckhouse Prom++ доступен в виде Docker-образа в  registry: registry.deckhouse.ru/prompp/.
+Deckhouse Prom++ доступен в виде Docker-образа в следующих реестрах:
+- `registry.deckhouse.ru/prompp/prompp`
+- `ghcr.io/deckhouse/prompp`
+
+Все доступные версии можно найти на [странице релизов](https://github.com/deckhouse/prompp/releases).
 
 Чтобы быстро запустить контейнер:
 
 ```bash
-docker run --name prompp -d -p 127.0.0.1:9090:9090 registry.deckhouse.ru/prompp/prompp:2.53.2-0.2.2-amd64
+docker run --name prompp -d -p 127.0.0.1:9090:9090 registry.deckhouse.ru/prompp/prompp:0.7.4
+```
 
+или используя GitHub Container Registry:
+
+```bash
+docker run --name prompp -d -p 127.0.0.1:9090:9090 ghcr.io/deckhouse/prompp:0.7.4
 ```  
 
 После запуска Deckhouse Prom++ будет доступен по [http://localhost:9090/](http://localhost:9090/).
@@ -47,8 +56,7 @@ docker run --name prompp -d -p 127.0.0.1:9090:9090 registry.deckhouse.ru/prompp/
 Вы также можете добавить собственную конфигурацию для Prom++, передав параметр config.file:
 
 ```bash
-docker run --name prompp -v /path/on/host/prometheus.yml:/etc/prometheus.yml -d -p 127.0.0.1:9090:9090 registry.deckhouse.ru/prompp/prompp:2.53.2-0.2.2-amd64 --config.file=/etc/prometheus.yml
-
+docker run --name prompp -v /path/on/host/prometheus.yml:/etc/prometheus.yml -d -p 127.0.0.1:9090:9090 registry.deckhouse.ru/prompp/prompp:0.7.4 --config.file=/etc/prometheus.yml
 ```
 
 ## Prometheus Operator
@@ -62,7 +70,7 @@ docker run --name prompp -v /path/on/host/prometheus.yml:/etc/prometheus.yml -d 
      name: example-prometheus
      namespace: monitoring
    spec:
-     image: registry.deckhouse.ru/prompp/prompp:2.53.2-0.2.2-amd64  # Replace Prometheus with Deckhouse Prom++
+     image: registry.deckhouse.ru/prompp/prompp:0.7.4  # Replace Prometheus with Deckhouse Prom++
      securityContext:
        fsGroup: 64535
        runAsGroup: 64535
@@ -109,7 +117,7 @@ prompptool walpp --working-dir <path to prometheus data dir>
      namespace: monitoring
    spec:
      ...
-     image: registry.deckhouse.ru/prompp/prompp:2.53.2-0.2.2-amd64
+     image: registry.deckhouse.ru/prompp/prompp:0.7.4
      securityContext:
        fsGroup: 64535
        runAsGroup: 64535
