@@ -5,26 +5,26 @@ weight: 7
 
 ## Конвертация WAL перед установкой
 
-Deckhouse Prom++ использует другой формат WAL (Write-Ahead Log), но остается полностью совместимым с историческими блоками.  
-Поскольку WAL содержит **последние 1.5 блока данных** (обычно около **3 часов**), если вы планируете использовать Deckhouse Prom++ в качестве замены Prometheus, необходима конвертация WAL для предотвращения потери данных.
+Deckhouse Prom++ использует альтернативный формат WAL (Write-Ahead Log), но полностью совместим с историческими блоками.  
+Поскольку WAL содержит **последние 1,5 блока данных** (обычно около **3 часов**), если вы планируете использовать Deckhouse Prom++ в качестве замены Prometheus, необходимо переконвертировать WAL для предотвращения потери данных.
 
-См. [Руководство по миграции](#миграция-из-prometheus) для подробных шагов по конвертации.
+Обратитесь к [руководству по миграции](#миграция-из-prometheus) для подробных шагов по конвертации.
 
 ## Предварительно скомпилированные бинарные файлы
 
-1. Скачайте последний бинарный файл:
-   * [amd архитектура](/products/prompp/documentation/downloads/latest/prompp-binaries-amd64.tar.gz)
-   * [arm архитектура](/products/prompp/documentation/downloads/latest/prompp-binaries-arm64.tar.gz)
+1. Скачайте последний бинарный файл с учетом необходимой архитектуры:
+   * [amd64](/products/prompp/documentation/downloads/latest/prompp-binaries-amd64.tar.gz);
+   * [arm64](/products/prompp/documentation/downloads/latest/prompp-binaries-arm64.tar.gz).
 
 1. Распакуйте его:
 
-   ```yaml
+   ```bash
    tar zxf prompp-binaries-<amd64|arm64>.tar.gz
    ```
 
-   Это создаст папку `prompp` с бинарным файлом `prompp` и конфигурационным файлом `prometheus.yml`.
+   Будет создана папка `prompp` с бинарным файлом `prompp` и конфигурационным файлом `prometheus.yml`.
 
-1. Запустите его как замену для Prometheus:
+1. Запустите его как замену Prometheus:
 
    ```bash
    cd prompp
@@ -33,27 +33,28 @@ Deckhouse Prom++ использует другой формат WAL (Write-Ahead
 
 ## Docker
 
-Deckhouse Prom++ доступен в виде Docker-образа в следующих реестрах:
-- `registry.deckhouse.ru/prompp/prompp`
-- `ghcr.io/deckhouse/prompp`
+Deckhouse Prom++ доступен в виде Docker-образа в следующих хранилищах образов контейнеров:
+
+* `registry.deckhouse.ru/prompp/prompp`;
+* `ghcr.io/deckhouse/prompp`.
 
 Все доступные версии можно найти на [странице релизов](https://github.com/deckhouse/prompp/releases).
 
-Чтобы быстро запустить контейнер:
+Чтобы быстро запустить контейнер, выполните следующую команду:
 
 ```bash
 docker run --name prompp -d -p 127.0.0.1:9090:9090 registry.deckhouse.ru/prompp/prompp:0.7.4
 ```
 
-или используя GitHub Container Registry:
+Либо используйте GitHub Container Registry:
 
 ```bash
 docker run --name prompp -d -p 127.0.0.1:9090:9090 ghcr.io/deckhouse/prompp:0.7.4
 ```  
 
-После запуска Deckhouse Prom++ будет доступен по [http://localhost:9090/](http://localhost:9090/).
+После запуска Deckhouse Prom++ будет доступен по адресу [http://localhost:9090/](http://localhost:9090/).
 
-Вы также можете добавить собственную конфигурацию для Prom++, передав параметр config.file:
+Также вы можете добавить собственную конфигурацию Prom++, передав параметр `--config.file`:
 
 ```bash
 docker run --name prompp -v /path/on/host/prometheus.yml:/etc/prometheus.yml -d -p 127.0.0.1:9090:9090 registry.deckhouse.ru/prompp/prompp:0.7.4 --config.file=/etc/prometheus.yml
@@ -70,13 +71,13 @@ docker run --name prompp -v /path/on/host/prometheus.yml:/etc/prometheus.yml -d 
      name: example-prometheus
      namespace: monitoring
    spec:
-     image: registry.deckhouse.ru/prompp/prompp:0.7.4  # Replace Prometheus with Deckhouse Prom++
+     image: registry.deckhouse.ru/prompp/prompp:0.7.4  # Замените Prometheus на Deckhouse Prom++.
      securityContext:
        fsGroup: 64535
        runAsGroup: 64535
        runAsNonRoot: true
        runAsUser: 64535 
-     # Additional parameters may be required based on your installation
+     # Дополнительные параметры могут зависеть от вашей установки.
    ```
 
 1. Примените обновленный ресурс:
@@ -93,11 +94,15 @@ docker run --name prompp -v /path/on/host/prometheus.yml:/etc/prometheus.yml -d 
 
 #### Конвертация WAL Prometheus в формат Deckhouse Prom++
 
+Чтобы сконвертировать WAL Prometheus в формат Deckhouse Prom++, выполните следующую команду:
+
 ```bash
 prompptool walvanilla --working-dir <path to prometheus data dir>
 ```  
 
 #### Конвертация WAL Deckhouse Prom++ обратно в формат Prometheus
+
+Чтобы сконвертировать WAL Deckhouse Prom++ в формат Prometheus, выполните следующую команду:
 
 ```bash
 prompptool walpp --working-dir <path to prometheus data dir>
@@ -107,7 +112,7 @@ prompptool walpp --working-dir <path to prometheus data dir>
 
 #### Конвертация WAL Prometheus в формат Deckhouse Prom++
 
-1. Создайте файл `prompp-migration.yaml` с следующей конфигурацией (дополнительные параметры могут зависеть от вашей установки):
+1. Создайте файл `prompp-migration.yaml` со следующей конфигурацией (дополнительные параметры могут зависеть от вашей установки):
 
    ```yaml
    apiVersion: monitoring.coreos.com/v1
@@ -138,7 +143,7 @@ prompptool walpp --working-dir <path to prometheus data dir>
            requests:
              cpu: "100m"
              memory: "128Mi"
-     # Дополнительные параметры могут зависеть от вашей установки
+     # Дополнительные параметры могут зависеть от вашей установки.
    ```  
 
 1. Примените обновленный ресурс:
