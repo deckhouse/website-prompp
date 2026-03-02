@@ -1980,7 +1980,7 @@ Linode APIv4.
 ### marathon_sd_config
 
 Конфигурации SD для Marathon позволяют получать цели сбора с использованием
-REST API [Marathon](https://mesosphere.github.io/marathon/). Deckhouse Prom++
+REST API [Marathon](https://github.com/d2iq-archive/marathon/blob/master/docs/docs/rest-api.md). Deckhouse Prom++
 будет периодически проверять конечную точку REST для текущих задач и
 создавать группу целей для каждого приложения, у которого есть хотя бы одна здоровая задача.
 
