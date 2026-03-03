@@ -5,6 +5,8 @@ services:
       - ".werf/nginx-local.conf:/etc/nginx/nginx.conf:ro"
     ports:
       - "80:80"
+    dns:
+      - 8.8.8.8
     depends_on:
       hugo:
         condition: service_healthy
@@ -13,6 +15,8 @@ services:
     image: hugomods/hugo:debian-ci-0.150.1
     user: "${UID:-1000}:${GID:-1000}"
     command: server --renderToMemory --printPathWarnings --printI18nWarnings --bind=0.0.0.0 -p 1313 --liveReloadPort 80 --noBuildLock --enableGitInfo=false
+    dns:
+      - 8.8.8.8
     ports:
       - "1313:1313"
       - "1314:1314"
