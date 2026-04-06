@@ -4,5 +4,5 @@ module github.com/deckhouse/website-promm
 
 go 1.24.2
 
-require github.com/deckhouse/hugo-web-product-module v0.1.10 // indirect
+require github.com/deckhouse/hugo-web-product-module v0.1.11 // indirect
 
