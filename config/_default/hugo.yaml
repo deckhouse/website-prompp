@@ -68,6 +68,9 @@ params:
   # Enable Lunr.js offline search
   offlineSearch: true
 
+  # Enable PDF/DOCX documentation exports (generated in CI, downloadable from sidebar).
+  pdf: true
+
   # Global relevant links.
   links:
 
@@ -104,6 +107,7 @@ languages:
     baseURL: https://deckhouse.io/products/prompp/
     params:
       description: ""
+      pdfTitle: "Deckhouse Prom++ Documentation"
   ru:
     disabled: false
     weight: 1
@@ -111,3 +115,4 @@ languages:
     baseURL: https://deckhouse.ru/products/prompp/
     params:
       description: ""
+      pdfTitle: "Документация Deckhouse Prom++"
