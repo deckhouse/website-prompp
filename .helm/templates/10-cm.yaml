@@ -86,6 +86,10 @@ data:
 
         rewrite /overview/ /products/prompp/documentation/ redirect;
 
+        location ~* ^/products/prompp/(?<path>documentation/downloads/print/.+)$ {
+            try_files /$lang/$path /$path/ =404;
+        }
+
         location ~ /downloads/source/(?<path>.+(?<ext>\.tar\.gz|\.zip))$ {
           set $download_url https://github.com/deckhouse/prompp/archive/$path;
           set $log_location "source";
