@@ -8,7 +8,10 @@ cascade:
     simple_list: true
 outputs:
   - HTML
+  - markdown
   - search
+  - llms
+  - corpus
   - print
 ---
 
